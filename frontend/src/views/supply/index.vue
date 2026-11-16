@@ -4,6 +4,10 @@
       <div>
         <h2>供应链效率监控管理</h2>
         <p class="page-desc">维护供应链效率的耗时对比、瓶颈识别与优化建议，为供应链效率监控提供可审计的数据工程流程。</p>
+        <p class="page-desc">
+          注：下表「当前耗时/标准耗时」为示例登记值；基于事件轨迹核算的真实口径（区间并集、反事实延迟贡献）
+          见 <RouterLink to="/trajectory" class="link">供应链轨迹核算</RouterLink>。
+        </p>
       </div>
       <div class="page-actions">
         <button class="btn primary" type="button" @click="openCreate">登记效率指标</button>

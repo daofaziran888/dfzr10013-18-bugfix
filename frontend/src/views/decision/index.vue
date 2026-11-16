@@ -7,6 +7,7 @@
       </div>
       <div class="page-actions">
         <button class="btn primary" type="button" @click="openCreate">登记决策建议</button>
+        <button class="btn" type="button" @click="consumeBottlenecks">消费轨迹瓶颈数据集</button>
         <button class="btn" type="button" @click="exportRows">导出决策建议推送清单</button>
       </div>
     </header>
@@ -92,6 +93,21 @@ function exportRows() {
 
 function openCreate() {
   errorMessage.value = '决策建议登记入口尚未接入审批流'
+}
+
+async function consumeBottlenecks() {
+  errorMessage.value = ''
+  try {
+    const response = await request('/api/decision/trajectory-consume', { method: 'POST' })
+    if (!response.ok) {
+      throw new Error('瓶颈数据集消费失败')
+    }
+    const payload = await response.json()
+    errorMessage.value = `${payload.message}；本次同步登记 ${payload.synced_to_decision ?? 0} 条，轨迹依据已随建议保存`
+    await reload()
+  } catch (error) {
+    errorMessage.value = error instanceof Error ? error.message : '跨模块消费失败'
+  }
 }
 
 async function runAction(action: string, row: Row) {

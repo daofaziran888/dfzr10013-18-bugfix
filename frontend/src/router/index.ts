@@ -6,6 +6,7 @@ const Finance = () => import('@/views/finance/index.vue')
 const Sales = () => import('@/views/sales/index.vue')
 const Customer = () => import('@/views/customer/index.vue')
 const Supply = () => import('@/views/supply/index.vue')
+const Trajectory = () => import('@/views/trajectory/index.vue')
 const Hr = () => import('@/views/hr/index.vue')
 const Forecast = () => import('@/views/forecast/index.vue')
 const Alert = () => import('@/views/alert/index.vue')
@@ -27,6 +28,7 @@ const router = createRouter({
     { path: '/sales', name: 'sales', component: Sales },
     { path: '/customer', name: 'customer', component: Customer },
     { path: '/supply', name: 'supply', component: Supply },
+    { path: '/trajectory', name: 'trajectory', component: Trajectory },
     { path: '/hr', name: 'hr', component: Hr },
     { path: '/forecast', name: 'forecast', component: Forecast },
     { path: '/alert', name: 'alert', component: Alert },

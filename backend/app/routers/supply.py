@@ -30,6 +30,12 @@ def list_entries(
     return PageResult(items=items, total=total, page=page, size=size)
 
 
+@router.get("/trajectory-metrics")
+def trajectory_metrics() -> dict[str, Any]:
+    """轨迹核算口径的效率指标：处理/等待/返工/未完成与瓶颈排序，附测算方法说明。"""
+    return service.trajectory_metrics()
+
+
 @router.get("/{entry_id}", response_model=dict)
 def get_entry(entry_id: int) -> dict:
     """读取单条效率指标明细；不存在时给出可读的错误说明。"""

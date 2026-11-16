@@ -30,6 +30,26 @@ def list_entries(
     return PageResult(items=items, total=total, page=page, size=size)
 
 
+# 固定字面量路径必须声明在 /{entry_id} 通配路由之前，否则会被当成条目 id 解析。
+@router.get("/trajectory-recommendations")
+def trajectory_recommendations() -> dict[str, Any]:
+    """读取轨迹驱动的决策建议，附每个环节在各订单上的可展开贡献区间。"""
+    return service.list_trajectory_recommendations()
+
+
+@router.get("/export")
+def export_entries() -> dict[str, Any]:
+    """导出决策建议推送清单：返回当前过滤条件下的全量数据。"""
+    items, total = service.list_entries(page=1, size=10000)
+    return {"module": "decision", "total": total, "items": items}
+
+
+@router.post("/trajectory-consume")
+def consume_trajectory_bottlenecks() -> dict[str, Any]:
+    """跨模块消费瓶颈环节数据集：按量化延迟贡献推送建议，轨迹依据随建议保存。"""
+    return service.consume_bottlenecks()
+
+
 @router.get("/{entry_id}", response_model=dict)
 def get_entry(entry_id: int) -> dict:
     """读取单条决策建议明细；不存在时给出可读的错误说明。"""
@@ -56,10 +76,3 @@ def run_action(entry_id: int, payload: EntryPayload) -> ActionResult:
     if entry is None:
         return ActionResult(ok=False, message=message)
     return ActionResult(ok=True, message=message, entry=entry)
-
-
-@router.get("/export")
-def export_entries() -> dict[str, Any]:
-    """导出决策建议推送清单：返回当前过滤条件下的全量数据。"""
-    items, total = service.list_entries(page=1, size=10000)
-    return {"module": "decision", "total": total, "items": items}
